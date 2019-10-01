@@ -133,17 +133,43 @@ namespace WindowsFormsApplication1
         private void линияToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Canvas.drawMode = "Линия";
+            
         }
 
         private void пероToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Canvas.drawMode = "Перо";
+            
         }
 
         private void ластикToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Canvas.drawMode = "Ластик";
             CurColor = Color.White;
+        }
+
+        private void эллипсToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Canvas.drawMode = "Эллипс";
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            txtBrushSize.Text = CurWidth.ToString();
+            starComboBox.SelectedIndex = 1;
+        }
+
+        private void звездаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Canvas.drawMode = "Звезда";
+        }
+        
+
+        private void starComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int numberOfVertices = Convert.ToInt32(starComboBox.SelectedItem.ToString());
+
+            Canvas.angle = 360 / (numberOfVertices * 2);
         }
     }
 }

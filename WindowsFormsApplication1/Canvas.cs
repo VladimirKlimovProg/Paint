@@ -14,8 +14,21 @@ namespace WindowsFormsApplication1
     public partial class Canvas : Form
     {
         public static string drawMode = "Перо";
+        public struct StarPoint
+        {
+            public float x;
+            public float y;
+
+            public StarPoint(float x, float y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+        }
+        public static int angle = 36;
         private int oldX, oldY;
         private int startX, startY;
+        private int radius = 50;
         private Bitmap bmp;
         public Canvas()
         {
@@ -94,7 +107,7 @@ namespace WindowsFormsApplication1
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (drawMode == "Линия")
+            if (drawMode == "Линия" || drawMode == "Эллипс")
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -118,6 +131,48 @@ namespace WindowsFormsApplication1
                 if (e.Button == MouseButtons.Left)
                 {
                     g.DrawLine(new Pen(MainForm.CurColor, MainForm.CurWidth), startX, startY, e.X, e.Y);
+                    pictureBox1.Invalidate();
+                }
+            }
+            else if (drawMode == "Эллипс")
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    g.DrawEllipse(new Pen(MainForm.CurColor, MainForm.CurWidth), startX, startY, e.X - startX, e.Y - startY);
+                    pictureBox1.Invalidate();
+                }
+            }
+            else if (drawMode == "Звезда")
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    startX = e.X;
+                    startY = e.Y;
+                    StarPoint[] starPoints = new StarPoint[360 / angle];
+                    int curAngle = angle;
+                    for (int i = 0; i < starPoints.Length; i++)
+                    {
+                        StarPoint point;
+                        if (i % 2 == 0)
+                        {
+                            point.x = (float)(startX + Math.Cos(curAngle * (Math.PI / 180)) * (radius / 2));
+                            point.y = (float)(startY - Math.Sin(curAngle * (Math.PI / 180)) * (radius / 2));
+                        }
+                        else
+                        {
+                            point.x = (float)(startX + Math.Cos(curAngle * (Math.PI / 180)) * radius);
+                            point.y = (float)(startY - Math.Sin(curAngle * (Math.PI / 180)) * radius);
+                        }
+                        starPoints[i] = point;
+                        curAngle = curAngle + angle;
+                    }
+
+                    for (int i = 0; i < starPoints.Length - 1; i++)
+                    {
+                        g.DrawLine(new Pen(MainForm.CurColor, MainForm.CurWidth), starPoints[i].x, starPoints[i].y, starPoints[i + 1].x , starPoints[i + 1].y);
+                    }
+
+                    g.DrawLine(new Pen(MainForm.CurColor, MainForm.CurWidth), starPoints[starPoints.Length - 1].x, starPoints[starPoints.Length - 1].y, starPoints[0].x, starPoints[0].y);
                     pictureBox1.Invalidate();
                 }
             }
