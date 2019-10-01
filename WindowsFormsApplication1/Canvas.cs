@@ -14,30 +14,21 @@ namespace WindowsFormsApplication1
     public partial class Canvas : Form
     {
         public static string drawMode = "Перо";
-        public struct StarPoint
-        {
-            public float x;
-            public float y;
-
-            public StarPoint(float x, float y)
-            {
-                this.x = x;
-                this.y = y;
-            }
-        }
         public static int angle = 36;
+        public static int radius = 50;
+        public static string filePath = null;
+        public static ImageFormat format = null; 
         private int oldX, oldY;
         private int startX, startY;
-        private int radius = 50;
-        private Bitmap bmp;
+        private static Bitmap bmp;
         public Canvas()
         {
             InitializeComponent();
-            bmp = new Bitmap(ClientSize.Width, ClientSize.Height);
+            bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.Image = bmp;
         }
 
-        public Canvas(String FileName)
+        public Canvas(string FileName)
         {
             InitializeComponent();
             bmp = new Bitmap(FileName);
@@ -142,37 +133,44 @@ namespace WindowsFormsApplication1
                     pictureBox1.Invalidate();
                 }
             }
-            else if (drawMode == "Звезда")
+            else if (drawMode == "Звезда незакрашенная" || drawMode == "Звезда закрашенная")
             {
                 if (e.Button == MouseButtons.Left)
                 {
                     startX = e.X;
                     startY = e.Y;
-                    StarPoint[] starPoints = new StarPoint[360 / angle];
+                    PointF[] points = new PointF[360 / angle];
                     int curAngle = angle;
-                    for (int i = 0; i < starPoints.Length; i++)
+                    for (int i = 0; i < points.Length; i++)
                     {
-                        StarPoint point;
+                        PointF point;
                         if (i % 2 == 0)
                         {
-                            point.x = (float)(startX + Math.Cos(curAngle * (Math.PI / 180)) * (radius / 2));
-                            point.y = (float)(startY - Math.Sin(curAngle * (Math.PI / 180)) * (radius / 2));
+                            float x = (float)(startX + Math.Cos(curAngle * (Math.PI / 180)) * (radius / 2));
+                            float y = (float)(startY - Math.Sin(curAngle * (Math.PI / 180)) * (radius / 2));
+                            point = new PointF(x, y);
+
                         }
                         else
                         {
-                            point.x = (float)(startX + Math.Cos(curAngle * (Math.PI / 180)) * radius);
-                            point.y = (float)(startY - Math.Sin(curAngle * (Math.PI / 180)) * radius);
+                            float x = (float)(startX + Math.Cos(curAngle * (Math.PI / 180)) * radius);
+                            float y = (float)(startY - Math.Sin(curAngle * (Math.PI / 180)) * radius);
+                            point = new PointF(x, y);
                         }
-                        starPoints[i] = point;
+                        points[i] = point;
                         curAngle = curAngle + angle;
                     }
 
-                    for (int i = 0; i < starPoints.Length - 1; i++)
+                    if (drawMode == "Звезда незакрашенная")
                     {
-                        g.DrawLine(new Pen(MainForm.CurColor, MainForm.CurWidth), starPoints[i].x, starPoints[i].y, starPoints[i + 1].x , starPoints[i + 1].y);
+                        g.DrawPolygon(new Pen(MainForm.CurColor, MainForm.CurWidth), points);
+                    }
+                    else
+                    {
+                        SolidBrush brush = new SolidBrush(MainForm.CurColor);
+                        g.FillPolygon(brush, points);
                     }
 
-                    g.DrawLine(new Pen(MainForm.CurColor, MainForm.CurWidth), starPoints[starPoints.Length - 1].x, starPoints[starPoints.Length - 1].y, starPoints[0].x, starPoints[0].y);
                     pictureBox1.Invalidate();
                 }
             }
@@ -188,6 +186,47 @@ namespace WindowsFormsApplication1
             {
                 bmp.Save(dlg.FileName, ff[dlg.FilterIndex - 1]);
             }
+        }
+
+        public void Save()
+        {
+          
+            if (filePath == null)
+            {
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.AddExtension = true;
+                dlg.Filter = "Windows Bitmap (*.bmp)|*.bmp| Файлы JPEG (*.jpg)|*.jpg";
+                ImageFormat[] ff = { ImageFormat.Bmp, ImageFormat.Jpeg };
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    bmp.Save(dlg.FileName, ff[dlg.FilterIndex - 1]);
+                    filePath = dlg.FileName;
+                    format = ff[dlg.FilterIndex - 1];
+                }
+            }
+            else
+            {
+                bmp.Save(filePath, format);
+            }
+
+        }
+
+        public void ZoomIn()
+        {
+            Size newSize = new Size(bmp.Width * 2, bmp.Height * 2);
+            bmp = new Bitmap(bmp, newSize);
+            pictureBox1.Image = bmp;
+
+            //pictureBox1.Width = pictureBox1.Width * 2;
+            //pictureBox1.Height = pictureBox1.Height * 2;
+
+        }
+
+        public void ZoomOut()
+        {
+            Size newSize = new Size(bmp.Width / 2, bmp.Height / 2);
+            bmp = new Bitmap(bmp, newSize);
+            pictureBox1.Image = bmp;
         }
 
     }

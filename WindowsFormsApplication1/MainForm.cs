@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,7 +113,19 @@ namespace WindowsFormsApplication1
 
         private void сохранитьКакToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((Canvas)ActiveMdiChild).SaveAs();
+            if (ActiveMdiChild != null)
+            {
+                ((Canvas)ActiveMdiChild).SaveAs();
+            }
+           
+        }
+
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ActiveMdiChild != null)
+            {
+                ((Canvas)ActiveMdiChild).Save();
+            };
         }
 
         private void слеваНаправоToolStripMenuItem_Click(object sender, EventArgs e)
@@ -133,13 +146,13 @@ namespace WindowsFormsApplication1
         private void линияToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Canvas.drawMode = "Линия";
-            
+
         }
 
         private void пероToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Canvas.drawMode = "Перо";
-            
+
         }
 
         private void ластикToolStripMenuItem_Click(object sender, EventArgs e)
@@ -157,19 +170,53 @@ namespace WindowsFormsApplication1
         {
             txtBrushSize.Text = CurWidth.ToString();
             starComboBox.SelectedIndex = 1;
+            radiusTextBox.Text = Canvas.radius.ToString();
         }
-
-        private void звездаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Canvas.drawMode = "Звезда";
-        }
-        
 
         private void starComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             int numberOfVertices = Convert.ToInt32(starComboBox.SelectedItem.ToString());
 
             Canvas.angle = 360 / (numberOfVertices * 2);
+        }
+
+
+        private void звездаЗакрашеннаяToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Canvas.drawMode = "Звезда закрашенная";
+        }
+
+        private void звездаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Canvas.drawMode = "Звезда незакрашенная";
+        }
+
+        private void radiusTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Canvas.radius = int.Parse(radiusTextBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Значение должно быть целым числом.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void масштабToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ActiveMdiChild != null)
+            {
+                ((Canvas)ActiveMdiChild).ZoomIn();
+            }
+        }
+
+        private void масштабToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (ActiveMdiChild != null)
+            {
+                ((Canvas)ActiveMdiChild).ZoomOut();
+            }
         }
     }
 }
