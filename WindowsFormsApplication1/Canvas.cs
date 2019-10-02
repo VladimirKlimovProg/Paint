@@ -4,14 +4,16 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Canvas : Form
+    public partial class Canvas: Form
     {
         public static string drawMode = "Перо";
         public static int angle = 36;
@@ -21,6 +23,7 @@ namespace WindowsFormsApplication1
         private int oldX, oldY;
         private int startX, startY;
         private static Bitmap bmp;
+        public static Dictionary<string, IPlugin> plugins = new Dictionary<string, IPlugin>();
         public Canvas()
         {
             InitializeComponent();

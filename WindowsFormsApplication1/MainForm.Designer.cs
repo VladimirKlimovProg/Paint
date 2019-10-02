@@ -46,6 +46,8 @@
             this.сверхуВнизToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.упорядочитьЗначкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.плагиныToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.масштабToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.масштабToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -70,8 +72,6 @@
             this.radiusTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.масштабToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.масштабToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -214,6 +214,20 @@
             this.плагиныToolStripMenuItem.Name = "плагиныToolStripMenuItem";
             this.плагиныToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.плагиныToolStripMenuItem.Text = "Плагины";
+            // 
+            // масштабToolStripMenuItem
+            // 
+            this.масштабToolStripMenuItem.Name = "масштабToolStripMenuItem";
+            this.масштабToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.масштабToolStripMenuItem.Text = "Масштаб+";
+            this.масштабToolStripMenuItem.Click += new System.EventHandler(this.масштабToolStripMenuItem_Click);
+            // 
+            // масштабToolStripMenuItem1
+            // 
+            this.масштабToolStripMenuItem1.Name = "масштабToolStripMenuItem1";
+            this.масштабToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.масштабToolStripMenuItem1.Text = "Масштаб-";
+            this.масштабToolStripMenuItem1.Click += new System.EventHandler(this.масштабToolStripMenuItem1_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -412,20 +426,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
-            // масштабToolStripMenuItem
-            // 
-            this.масштабToolStripMenuItem.Name = "масштабToolStripMenuItem";
-            this.масштабToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.масштабToolStripMenuItem.Text = "Масштаб+";
-            this.масштабToolStripMenuItem.Click += new System.EventHandler(this.масштабToolStripMenuItem_Click);
-            // 
-            // масштабToolStripMenuItem1
-            // 
-            this.масштабToolStripMenuItem1.Name = "масштабToolStripMenuItem1";
-            this.масштабToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.масштабToolStripMenuItem1.Text = "Масштаб-";
-            this.масштабToolStripMenuItem1.Click += new System.EventHandler(this.масштабToolStripMenuItem1_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -462,7 +462,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem плагиныToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сохранитьКакToolStripMenuItem;
@@ -495,6 +494,7 @@
         public System.Windows.Forms.ToolStripTextBox radiusTextBox;
         private System.Windows.Forms.ToolStripMenuItem масштабToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem масштабToolStripMenuItem1;
+        public System.Windows.Forms.ToolStripMenuItem плагиныToolStripMenuItem;
     }
 }
 

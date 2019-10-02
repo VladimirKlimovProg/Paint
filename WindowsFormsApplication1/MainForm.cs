@@ -4,21 +4,81 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IMainApp
     {
-
+        public Bitmap Image
+        {
+            get
+            {
+                return (Bitmap)((Canvas)ActiveMdiChild).pictureBox1.Image;
+            }
+            set
+            {
+                ((Canvas)ActiveMdiChild).pictureBox1.Image = value;
+            }
+        }
         public static Color CurColor = Color.Black;
         public static int CurWidth = 3;
+        public static Dictionary<string, IPlugin> plugins = new Dictionary<string, IPlugin>();
         public MainForm()
         {
             InitializeComponent();
+            FindPlugins();
+            CreatePluginsMenu();
+        }
+        void FindPlugins()
+        {
+            // папка с плагинами
+            string folder = System.AppDomain.CurrentDomain.BaseDirectory;
+
+            // dll-файлы в этой папке
+            string[] files = Directory.GetFiles(folder, "*.dll");
+
+            foreach (string file in files)
+                try
+                {
+                    Assembly assembly = Assembly.LoadFile(file);
+
+                    foreach (Type type in assembly.GetTypes())
+                    {
+                        Type iface = type.GetInterface("WindowsFormsApplication1.IPlugin");
+
+                        if (iface != null)
+                        {
+                            IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                            plugins.Add(plugin.Name, plugin);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка загрузки плагина\n" + ex.Message);
+                }
+        }
+
+        void CreatePluginsMenu()
+        {
+            foreach (string name in plugins.Keys)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(name);
+                item.Click += OnPluginClick;
+                плагиныToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+
+        private void OnPluginClick(object sender, EventArgs args)
+        {
+            IPlugin plugin = plugins[((ToolStripMenuItem)sender).Text];
+            plugin.Transform(this);
         }
 
         private void новыйToolStripMenuItem_Click(object sender, EventArgs e)

@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{EBCE9404-1C62-4E06-91A7-DAFB590CDB8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{7DECF552-2108-4284-9EA4-5A8C6E6494F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlugIn", "ClassLibrary1\PlugIn.csproj", "{7DECF552-2108-4284-9EA4-5A8C6E6494F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
